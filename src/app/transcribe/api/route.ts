@@ -6,7 +6,7 @@ import {
   TranscriptionSource,
 } from "@deepgram/sdk/dist/types";
 
-const dg = new Deepgram("3c2a5c10396787b3468cd29bd3887190e2a45f59");
+const dg = new Deepgram(process.env.DEEPGRAM_API_KEY as string);
 
 export async function POST(request: Request) {
   const body: {
