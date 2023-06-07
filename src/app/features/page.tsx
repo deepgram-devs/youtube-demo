@@ -7,6 +7,7 @@ import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect } from "react";
 
 const Next = () => {
   const { features } = useTranscriptionContext();
@@ -45,7 +46,13 @@ const Prev = () => {
 };
 
 const Features = () => {
-  const { features } = useTranscriptionContext();
+  const { features, setFeatures } = useTranscriptionContext();
+
+  const updateFeature = (index: number, value: boolean) => {
+    let copyFeatures = [...features]; //shallow copy features
+    copyFeatures[index].value = value;
+    setFeatures(copyFeatures);
+  };
 
   return (
     <div className="flex flex-col">
@@ -55,17 +62,15 @@ const Features = () => {
             key={feature.key}
             className="flex checkbox-label rounded-md min-w-full p-5 ring-1 ring-inset ring-gray-300 gap-4"
           >
-            <feature.icon
-              className="h-6 w-6 shrink-0 mr-2"
-              aria-hidden="true"
-            />
             <div className="grow flex flex-col gap-2 select-none">
               <input
                 defaultChecked={feature.value}
                 type="checkbox"
                 name={feature.key}
                 id={feature.key}
-                onChange={() => (feature.value = !feature.value)}
+                onChange={() => {
+                  updateFeature(index, !feature.value);
+                }}
                 className="hidden focus:outline-none focus:ring-0"
               />
               <label

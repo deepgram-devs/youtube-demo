@@ -1,19 +1,10 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
-import {
-  ChatBubbleLeftEllipsisIcon,
-  ChatBubbleLeftRightIcon,
-  FingerPrintIcon,
-  ForwardIcon,
-  MegaphoneIcon,
-  ShieldExclamationIcon,
-} from "@heroicons/react/24/outline";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type Feature = {
   name: string;
   description: string;
-  icon: any;
   key: string;
   value: boolean;
 };
@@ -30,6 +21,7 @@ type TranscriptionContext = {
   url: string;
   setUrl: (index: string) => void;
   features: Features;
+  setFeatures: (features: Features) => void;
 };
 
 interface TranscriptionContextInterface {
@@ -42,35 +34,30 @@ const availableFeatures: Features = [
   {
     name: "Smart Format",
     description: "Improves readability by applying additional formatting.",
-    icon: ChatBubbleLeftEllipsisIcon,
     key: "smart_format",
     value: true,
   },
   {
     name: "Summarization",
     description: "Provide a short summary for the spoken content.",
-    icon: ForwardIcon,
     key: "summarize",
     value: false,
   },
   {
     name: "Topic Detection",
     description: "Identify and extract key topics for sections of content.",
-    icon: MegaphoneIcon,
     key: "detect_topics",
     value: false,
   },
   {
     name: "Entity Detection",
     description: "identify and extract key entities for sections of content.",
-    icon: FingerPrintIcon,
     key: "detect_entities",
     value: false,
   },
   {
     name: "Profanity Filter",
     description: "Automatically remove profanity from the transcript.",
-    icon: ShieldExclamationIcon,
     key: "profanity_filter",
     value: false,
   },
@@ -78,37 +65,50 @@ const availableFeatures: Features = [
     name: "Diarization",
     description:
       "Recognise speaker changes, and format showing who was speaking.",
-    icon: ChatBubbleLeftRightIcon,
     key: "diarize",
     value: false,
   },
 ];
 
-const getInitialUrl = (): string => {
-  const url = localStorage.getItem("transcriptionUrl");
-  return url ? url : "";
+const setLocalStorage = (key: string, value: unknown) => {
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    // catch possible errors:
+    // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
+  }
 };
 
-const getInitialFeatures = (): Features => {
-  const storedFeaturesString = localStorage.getItem("transcriptionFeatures");
-  let features = availableFeatures;
-
-  if (storedFeaturesString) {
-    const storedFeatures: FeaturesMap = JSON.parse(storedFeaturesString);
-    storedFeatures.forEach((sF, i) => (features[i].value = sF.value));
+const getLocalStorage = (key: string, initialValue: unknown) => {
+  try {
+    const value = window.localStorage.getItem(key);
+    return value ? JSON.parse(value) : initialValue;
+  } catch (e) {
+    // if error, return initial value
+    return initialValue;
   }
-
-  return features;
 };
 
 const TranscriptionContextProvider = ({
   children,
 }: TranscriptionContextInterface) => {
-  const [url, setUrl] = useState(getInitialUrl);
-  const [features, setFeatures] = useState(getInitialFeatures);
+  const [url, setUrl] = useState(getLocalStorage("url", ""));
+  const [features, setFeatures] = useState(
+    getLocalStorage("features", availableFeatures)
+  );
+
+  useEffect(() => {
+    setLocalStorage("url", url);
+  }, [url]);
+
+  useEffect(() => {
+    setLocalStorage("features", features);
+  }, [features]);
 
   return (
-    <TranscriptionContext.Provider value={{ url, setUrl, features }}>
+    <TranscriptionContext.Provider
+      value={{ url, setUrl, features, setFeatures }}
+    >
       {children}
     </TranscriptionContext.Provider>
   );
