@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     }
   };
 
-  const videoId = urlParser("https://youtu.be/uqcfZZR7_v0");
+  const videoId = urlParser(source.url);
   const stream = fs.createWriteStream(`/tmp/ytdl-${videoId}.mp4`);
 
   const getVideo = new Promise((resolve, reject) => {

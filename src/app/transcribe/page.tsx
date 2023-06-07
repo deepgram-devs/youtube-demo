@@ -15,8 +15,8 @@ const Features = () => {
     fetch("/transcribe/api", {
       method: "POST",
       body: JSON.stringify({
-        source: { url: "https://dpgr.am/spacewalk.wav" },
-        features: {},
+        source: { url },
+        features,
       }),
     })
       .then((res) => res.json())
@@ -29,14 +29,21 @@ const Features = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [features, url]);
 
   if (isLoading) return <p>Loading...</p>;
   if (!data) return <p>No data</p>;
 
   console.log(data);
 
-  return <div className="flex flex-col">{url}</div>;
+  return (
+    <div className="flex flex-col">
+      <div>{url}</div>
+      <pre style={{ whiteSpace: "pre-wrap" }}>
+        {JSON.stringify(data, null, 2)}
+      </pre>
+    </div>
+  );
 };
 
 export default Features;
