@@ -22,6 +22,11 @@ const Features = () => {
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
