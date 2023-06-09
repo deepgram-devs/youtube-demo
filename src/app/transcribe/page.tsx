@@ -159,7 +159,7 @@ const Features = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [features, url]);
 
   useEffect(() => {
     if (isLoading) {

@@ -30,7 +30,8 @@ export async function POST(request: Request) {
   };
 
   const videoId = urlParser(source.url);
-  const stream = fs.createWriteStream(`/tmp/ytdl-${videoId}.mp3`);
+  const mp3FilePath = `/tmp/ytdl-${videoId}.mp3`;
+  const stream = fs.createWriteStream(mp3FilePath);
 
   const getVideo = new Promise((resolve, reject) => {
     const fetch = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
@@ -40,7 +41,7 @@ export async function POST(request: Request) {
     fetch.pipe(stream);
     fetch.on("end", async () => {
       const dgSource: ReadStreamSource = {
-        stream: fs.createReadStream(`/tmp/ytdl-${videoId}.mp3`),
+        stream: fs.createReadStream(mp3FilePath),
         mimetype: "audio/mp3",
       };
 
