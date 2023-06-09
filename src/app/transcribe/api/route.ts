@@ -1,20 +1,19 @@
-import { NextResponse } from "next/server";
 import { Deepgram } from "@deepgram/sdk";
+import { FeatureMap, Features, FeaturesMap } from "@/context/transcription";
+import { NextResponse } from "next/server";
+import { ReadStreamSource } from "@deepgram/sdk/dist/types";
 import fs from "fs";
 import ytdl from "ytdl-core";
 
-import {
-  PrerecordedTranscriptionOptions,
-  ReadStreamSource,
-  TranscriptionSource,
-} from "@deepgram/sdk/dist/types";
-
-const dg = new Deepgram(process.env.DEEPGRAM_API_KEY as string);
+const dg = new Deepgram(
+  process.env.DEEPGRAM_API_KEY as string,
+  "llm.sandbox.deepgram.com"
+);
 
 export async function POST(request: Request) {
   const body: {
     source: { url: string };
-    features: PrerecordedTranscriptionOptions;
+    features: Features;
   } = await request.json();
   const { source, features } = body;
 
@@ -31,20 +30,45 @@ export async function POST(request: Request) {
   };
 
   const videoId = urlParser(source.url);
-  const stream = fs.createWriteStream(`/tmp/ytdl-${videoId}.mp4`);
+  const mp3FilePath = `/tmp/ytdl-${videoId}.mp3`;
+  const stream = fs.createWriteStream(mp3FilePath);
 
   const getVideo = new Promise((resolve, reject) => {
-    const fetch = ytdl(`https://www.youtube.com/watch?v=${videoId}`);
+    const fetch = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
+      filter: "audioonly",
+      quality: "highestaudio",
+    });
     fetch.pipe(stream);
     fetch.on("end", async () => {
       const dgSource: ReadStreamSource = {
-        stream: fs.createReadStream(`/tmp/ytdl-${videoId}.mp4`),
-        mimetype: "video/mp4",
+        stream: fs.createReadStream(mp3FilePath),
+        mimetype: "audio/mp3",
       };
 
-      const transcribe = await dg.transcription.preRecorded(dgSource, features);
+      const featureMap = (features: Features): FeaturesMap => {
+        return features.map((f, i): FeatureMap => ({ [f.key]: f.value }));
+      };
 
-      resolve(transcribe);
+      const map = featureMap(features);
+      map.push({ llm: 1 });
+
+      const dgFeatures = Object.assign({}, ...map);
+      console.log(dgFeatures);
+
+      const transcript = await dg.transcription.preRecorded(
+        dgSource,
+        dgFeatures
+      );
+
+      console.log(transcript);
+
+      const responseObj = {
+        transcript:
+          transcript.results.channels[0]?.alternatives[0]?.transcript || null,
+        summary: transcript.results?.summary?.short || null,
+      };
+
+      resolve(responseObj);
     });
   });
 

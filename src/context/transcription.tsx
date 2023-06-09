@@ -12,7 +12,7 @@ type Feature = {
 type Features = Feature[];
 
 type FeatureMap = {
-  [x: string]: boolean;
+  [x: string]: boolean | string | number;
 };
 
 type FeaturesMap = FeatureMap[];
@@ -40,7 +40,7 @@ const availableFeatures: Features = [
   {
     name: "Summarization",
     description: "Provide a short summary for the spoken content.",
-    key: "summarize",
+    key: "summarize_v2",
     value: false,
   },
   {
@@ -51,7 +51,7 @@ const availableFeatures: Features = [
   },
   {
     name: "Entity Detection",
-    description: "identify and extract key entities for sections of content.",
+    description: "Identify and extract key entities for sections of content.",
     key: "detect_entities",
     value: false,
   },
@@ -118,8 +118,5 @@ const useTranscriptionContext = () => {
   return useContext(TranscriptionContext);
 };
 
-const featureMap = (features: Features): FeaturesMap => {
-  return features.map((f): FeatureMap => ({ [f.key]: f.value }));
-};
-
-export { featureMap, TranscriptionContextProvider, useTranscriptionContext };
+export { TranscriptionContextProvider, useTranscriptionContext };
+export type { Feature, Features, FeatureMap, FeaturesMap };
