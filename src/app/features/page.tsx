@@ -18,7 +18,7 @@ const Next = () => {
       error="Please select at least one feature! I recommend smart formatting."
     >
       Get results
-      <ArrowLongRightIcon className="ml-3 h-5 w-5 " aria-hidden="true" />
+      <ArrowLongRightIcon className="ml-3 h-6" aria-hidden="true" />
     </PaginationButton>
   );
 };
@@ -33,7 +33,7 @@ const Prev = () => {
       error="Please select at least one feature! I recommend smart formatting."
       style="dg-button--secondary"
     >
-      <ArrowLongLeftIcon className="mr-3 h-5 w-5 " aria-hidden="true" />
+      <ArrowLongLeftIcon className="mr-3 h-6 " aria-hidden="true" />
       Change video
     </PaginationButton>
   );

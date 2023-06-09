@@ -23,7 +23,7 @@ const supabase = createClient(
 const Prev = () => {
   return (
     <PaginationButton href="/features" validator={() => true}>
-      <ArrowLongLeftIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+      <ArrowLongLeftIcon className="mr-3 h-6" aria-hidden="true" />
       Change features
     </PaginationButton>
   );
@@ -162,8 +162,9 @@ const Features = () => {
   }, []);
 
   useEffect(() => {
-    if (isLoading)
+    if (isLoading) {
       setOutput(<Loader isLoading={isLoading} message="Transcribing..." />);
+    }
   }, [isLoading]);
 
   useEffect(() => {

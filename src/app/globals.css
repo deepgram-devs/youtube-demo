@@ -21,6 +21,11 @@
   }
 
   .dg-button--primary {
+    @apply text-[#101014] relative;
+    background: linear-gradient(90deg, #201cff -91.5%, #13ef95 80.05%);
+  }
+
+  /* .dg-button--primary {
     @apply bg-white text-[#101014];
   }
 
@@ -69,7 +74,7 @@
 
   .dg-button--secondary:hover::before {
     background: none;
-  }
+  } */
 }
 
 .loader * {

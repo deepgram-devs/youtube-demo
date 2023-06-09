@@ -20,7 +20,7 @@ const Next = () => {
       error="Please enter a YouTube link, or use my one."
     >
       Select features
-      <ArrowLongRightIcon className="ml-3 h-5 w-5 " aria-hidden="true" />
+      <ArrowLongRightIcon className="ml-3 h-6" aria-hidden="true" />
     </PaginationButton>
   );
 };
