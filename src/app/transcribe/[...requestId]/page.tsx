@@ -4,26 +4,23 @@ import {
   ArrowLongLeftIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import { createClient } from "@supabase/supabase-js";
-import { ScaleLoader } from "react-spinners";
-import { useEffect, useState, CSSProperties } from "react";
+import { PacmanLoader } from "react-spinners";
+import { useEffect, useState } from "react";
 import { useErrorContext } from "@/context/error";
-import { useRouter } from "next/navigation";
 import { useTranscriptionContext } from "@/context/transcription";
 import classNames from "@/util/classNames";
 import PaginationBar from "@/components/pagination/Bar";
 import PaginationButton from "@/components/pagination/Button";
 import YouTube from "react-youtube";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import { useRouter } from "next/navigation";
 
 const Prev = () => {
   return (
     <PaginationButton href="/features" validator={() => true}>
-      <ArrowLongLeftIcon className="mr-3 h-5 w-5" aria-hidden="true" />
+      <ArrowLongLeftIcon
+        className="mr-3 h-5 w-5 text-gray-400"
+        aria-hidden="true"
+      />
       Change features
     </PaginationButton>
   );
@@ -37,7 +34,7 @@ const FeatureSummary = () => {
       <h2>Features</h2>
       <div className="grid grid-cols-3 gap-4">
         {features.map((feature, index) => (
-          <div key={index} className="relative flex items-start">
+          <div className="relative flex items-start">
             <div className="flex h-6 items-center">
               <CheckCircleIcon
                 className={classNames(
@@ -47,7 +44,7 @@ const FeatureSummary = () => {
               />
             </div>
             <div className="ml-3 text-sm leading-6">
-              <label htmlFor="comments" className="font-medium text-gray-200">
+              <label htmlFor="comments" className="font-medium text-gray-900">
                 {feature.name}
               </label>
             </div>
@@ -76,27 +73,18 @@ const Results = ({ data }: { data: any }) => {
       <h2>Results</h2>
       <div>
         {data.summary && (
-          <span>
+          <p>
             <h3>Summary</h3>
             {data.summary}
-          </span>
+          </p>
         )}
-        <span>
+        <p>
           <h3>Transcript</h3>
           {data.transcript}
-        </span>
+        </p>
       </div>
     </div>
   );
-};
-
-const override: CSSProperties = {
-  display: "block",
-};
-
-const randomColor = () => {
-  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-  return "#" + randomColor;
 };
 
 const Loader = ({
@@ -106,27 +94,19 @@ const Loader = ({
   isLoading: boolean;
   message: string;
 }) => {
-  const [color, setColor] = useState(randomColor());
-
-  let timeout: any;
-
-  useEffect(() => {
-    clearInterval(timeout);
-
-    timeout = setInterval(() => {
-      setColor(randomColor());
-    }, 1000);
-  }, [timeout]);
-
   return (
-    <div className="loader flex flex-col justify-center items-center p-8 gap-2">
-      <ScaleLoader loading={isLoading} color={color} cssOverride={override} />
-      <h3>{message}</h3>
+    <div>
+      <PacmanLoader loading={isLoading} />
+      {message}
     </div>
   );
 };
 
-const Features = () => {
+const Features = ({
+  params: { requestId },
+}: {
+  params: { requestId: string };
+}) => {
   const { replace } = useRouter();
   const { setError } = useErrorContext();
   const { features, url } = useTranscriptionContext();
@@ -137,28 +117,26 @@ const Features = () => {
   );
 
   useEffect(() => {
-    setLoading(true);
-    fetch("/transcribe/api", {
-      method: "POST",
-      body: JSON.stringify({
-        source: { url },
-        features,
-      }),
-    })
-      .then((res) => res.json())
-      .then(async (data) => {
-        const { error } = await supabase
-          .from("transcriptions")
-          .insert({ url, request_id: data.requestId, data, features });
-
-        setData(data);
+    if (!requestId) {
+      setLoading(true);
+      fetch("/transcribe/api", {
+        method: "POST",
+        body: JSON.stringify({
+          source: { url },
+          features,
+        }),
       })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -168,29 +146,22 @@ const Features = () => {
 
   useEffect(() => {
     if (data.requestId) {
+      replace(`/transcribe/${data.requestId}`);
       setOutput(<Results data={data} />);
     }
   }, [data]);
 
-  const videoId = urlParser(url);
-
   return (
-    <div className="flex flex-col prose prose-invert max-w-full">
-      <div
-        style={{
-          background: `https://i3.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+    <div className="flex flex-col prose max-w-full">
+      <YouTube
+        videoId={urlParser(url) as string}
+        id="the-video"
+        className="w-full aspect-w-16 aspect-h-9 rounded-xl overflow-hidden"
+        opts={{
+          width: "auto",
+          height: "auto",
         }}
-      >
-        <YouTube
-          videoId={videoId}
-          id="the-video"
-          className="w-full aspect-w-16 aspect-h-9 rounded-xl overflow-hidden"
-          opts={{
-            width: "auto",
-            height: "auto",
-          }}
-        />
-      </div>
+      />
       <FeatureSummary />
       <PaginationBar prev={Prev} />
       {output}

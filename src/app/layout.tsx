@@ -20,14 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} body`}>
         <ErrorContextProvider>
           <TranscriptionContextProvider>
-            <main className="flex justify-center mt-20">
+            <main className="flex justify-center mt-20 mx-auto p-8 lg:p-4">
               <div className="w-[48em] gap-2">
                 <Brand />
                 <Errors />
-                {/* <Progress /> */}
                 <div className="min-h-[24em]">{children}</div>
               </div>
             </main>

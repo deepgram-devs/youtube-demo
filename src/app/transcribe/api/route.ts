@@ -59,13 +59,14 @@ export async function POST(request: Request) {
         dgFeatures
       );
 
-      console.log(transcript);
-
       const responseObj = {
+        requestId: transcript.metadata.request_id || null,
         transcript:
           transcript.results.channels[0]?.alternatives[0]?.transcript || null,
         summary: transcript.results?.summary?.short || null,
       };
+
+      console.log(responseObj);
 
       resolve(responseObj);
     });

@@ -1,6 +1,7 @@
 "use client";
 
 import { useErrorContext } from "@/context/error";
+import classNames from "@/util/classNames";
 import Link from "next/link";
 
 const PaginationButton = ({
@@ -8,11 +9,13 @@ const PaginationButton = ({
   href,
   validator = () => true,
   error = "An error has occured.",
+  style = "dg-button--primary",
 }: {
   children: any;
   href: string;
   validator?: () => boolean;
   error?: string;
+  style?: string;
 }) => {
   const { setError } = useErrorContext();
 
@@ -29,9 +32,9 @@ const PaginationButton = ({
     <Link
       onClick={validate}
       href={href}
-      className="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+      className={classNames("dg-button", style)}
     >
-      {children}
+      <span>{children}</span>
     </Link>
   );
 };

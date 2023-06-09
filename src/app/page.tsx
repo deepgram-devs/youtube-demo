@@ -19,11 +19,8 @@ const Next = () => {
       validator={() => !!url}
       error="Please enter a YouTube link, or use my one."
     >
-      Next
-      <ArrowLongRightIcon
-        className="ml-3 h-5 w-5 text-gray-400"
-        aria-hidden="true"
-      />
+      Select features
+      <ArrowLongRightIcon className="ml-3 h-5 w-5 " aria-hidden="true" />
     </PaginationButton>
   );
 };
@@ -34,10 +31,10 @@ const Home = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="rounded-md min-w-full p-5 ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600 flex gap-4">
+      <div className="bg-[#101014] rounded-md min-w-full p-5 ring-1 ring-inset ring-[#88888C] focus-within:ring-2 focus-within:ring-[#677df5] flex gap-4">
         <YouTubeLogo />
         <div className="grow flex flex-col gap-2">
-          <label htmlFor="name" className="block font-medium text-gray-900">
+          <label htmlFor="name" className="block font-medium text-[#E1E1E5]">
             YouTube video link
           </label>
           <input
@@ -48,7 +45,7 @@ const Home = () => {
               setError("");
               setUrl(event.target.value);
             }}
-            className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm leading-6"
+            className="block w-full border-0 p-0 bg-[#101014] text-[#E1E1E5] placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm leading-6"
             placeholder="https://www.youtube.com/watch?v=xfr..."
           />
         </div>
@@ -56,7 +53,7 @@ const Home = () => {
       <div className="text-xs">
         Dont have a video?{" "}
         <button
-          className="focus:outline-none focus:ring-0 text-sky-700 hover:underline"
+          className="focus:outline-none focus:ring-0 text-[#81f4b4] hover:underline"
           onClick={() => {
             setError("");
             setUrl("https://www.youtube.com/watch?v=uqcfZZR7_v0");

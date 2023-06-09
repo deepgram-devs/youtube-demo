@@ -1,10 +1,13 @@
 import { BeakerIcon } from "@heroicons/react/24/outline";
+import DeepgramLogo from "./DeepgramLogo";
 
 const Brand = () => {
   return (
     <div className="flex items-center mb-5">
-      <BeakerIcon className="w-12 mr-2 stroke-2 stroke-sky-600" />
-      <h1 className="text-4xl font-bold">DeepTube</h1>
+      <DeepgramLogo />
+      <h1 className="ml-4 pb-1 text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#EE028B] to-[#AE29FF]">
+        YouTube Demo
+      </h1>
     </div>
   );
 };
