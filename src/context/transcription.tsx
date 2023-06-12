@@ -7,6 +7,7 @@ type Feature = {
   description: string;
   key: string;
   value: boolean;
+  beta?: boolean;
 };
 
 type Features = Feature[];
@@ -22,6 +23,9 @@ type TranscriptionContext = {
   setUrl: (index: string) => void;
   features: Features;
   setFeatures: (features: Features) => void;
+  requestId: string;
+  setRequestId: (index: string) => void;
+  reset: () => boolean;
 };
 
 interface TranscriptionContextInterface {
@@ -54,11 +58,25 @@ const availableFeatures: Features = [
     description: "Identify and extract key entities for sections of content.",
     key: "detect_entities",
     value: false,
+    beta: true,
   },
   {
-    name: "Profanity Filter",
-    description: "Automatically remove profanity from the transcript.",
-    key: "profanity_filter",
+    name: "Utterances",
+    description: "Segment speech into meaningful semantic units.",
+    key: "utterances",
+    value: false,
+  },
+  {
+    name: "Paragraphs",
+    description:
+      "Split audio into paragraphs to improve transcript readability.",
+    key: "paragraphs",
+    value: false,
+  },
+  {
+    name: "Language Detection",
+    description: "Identify the dominant language spoken in submitted audio.",
+    key: "detect_language",
     value: false,
   },
   {
@@ -96,6 +114,15 @@ const TranscriptionContextProvider = ({
   const [features, setFeatures] = useState(
     getLocalStorage("features", availableFeatures)
   );
+  const [requestId, setRequestId] = useState("");
+
+  const reset = () => {
+    setUrl("");
+    setFeatures(availableFeatures);
+    setRequestId("");
+
+    return true;
+  };
 
   useEffect(() => {
     setLocalStorage("url", url);
@@ -107,7 +134,15 @@ const TranscriptionContextProvider = ({
 
   return (
     <TranscriptionContext.Provider
-      value={{ url, setUrl, features, setFeatures }}
+      value={{
+        url,
+        setUrl,
+        features,
+        setFeatures,
+        requestId,
+        setRequestId,
+        reset,
+      }}
     >
       {children}
     </TranscriptionContext.Provider>

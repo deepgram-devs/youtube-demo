@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  color-scheme: dark;
+}
+
 @layer components {
   .body {
     @apply bg-black text-[#E1E1E5];
@@ -17,7 +21,7 @@
   }
 
   .dg-button span {
-    @apply inline-flex py-3 px-6 rounded-md;
+    @apply inline-flex py-2 px-4 rounded-md;
   }
 
   .dg-button--primary {
@@ -25,56 +29,42 @@
     background: linear-gradient(90deg, #201cff -91.5%, #13ef95 80.05%);
   }
 
-  /* .dg-button--primary {
-    @apply bg-white text-[#101014];
-  }
-
   .dg-button--primary:hover:not(:focus):not(:active) {
-    @apply text-black;
-    background: linear-gradient(90deg, #201cff -91.5%, #13ef95 80.05%);
+    background: white;
   }
 
   .dg-button--primary:focus {
-    @apply focus:bg-white focus:text-[#101014] active:ring-2 active:ring-[#687ef7];
-  }
-
-  .dg-button--primary:active {
-    @apply focus:bg-white focus:text-[#101014] focus:ring-2 focus:border-[#687ef7];
+    background: black;
+    @apply focus:text-[#e5e5e5] active:ring-2 active:ring-[#687ef7];
   }
 
   .dg-button--secondary {
-    @apply text-[#e5e5e5] relative;
-    background: linear-gradient(90deg, #201cff -91.5%, #13ef95 80.05%);
-  }
-
-  .dg-button--secondary span {
-    @apply bg-black;
+    @apply text-[#e5e5e5] border border-[#BBBBBF] relative;
   }
 
   .dg-button--secondary:hover:not(:focus):not(:active) {
-    @apply bg-black text-black;
+    @apply border-[#FBFBFF];
   }
 
-  .dg-button--secondary:hover:not(:focus):not(:active) span {
-    @apply relative;
-    background: linear-gradient(90deg, #201cff -91.5%, #13ef95 80.05%);
+  .dg-button--secondary:focus {
+    background: black;
+    @apply focus:text-[#e5e5e5] active:ring-2 active:ring-[#687ef7];
   }
 
-  .dg-button--secondary::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -10px;
-    right: -10px;
-    bottom: 0;
-    background: linear-gradient(90deg, #201cff80 -91.5%, #13ef9580 80.05%);
-    z-index: -2;
-    filter: blur(10px);
+  .dg-button--tertiary {
+    @apply text-[#e5e5e5] relative;
+    background: linear-gradient(85.5deg, #ee028b 5.66%, #ae29ff 99.14%);
   }
 
-  .dg-button--secondary:hover::before {
-    background: none;
-  } */
+  .dg-button--tertiary:hover:not(:focus):not(:active) {
+    @apply text-black;
+    background: white;
+  }
+
+  .dg-button--tertiary:focus {
+    background: black;
+    @apply focus:text-[#e5e5e5] active:ring-2 active:ring-[#687ef7];
+  }
 }
 
 .loader * {

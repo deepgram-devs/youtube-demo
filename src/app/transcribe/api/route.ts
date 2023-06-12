@@ -1,9 +1,17 @@
+import { createClient } from "@supabase/supabase-js";
 import { Deepgram } from "@deepgram/sdk";
-import { FeatureMap, Features, FeaturesMap } from "@/context/transcription";
+import { Features } from "@/context/transcription";
 import { NextResponse } from "next/server";
 import { ReadStreamSource } from "@deepgram/sdk/dist/types";
 import fs from "fs";
+import urlParser from "@/util/urlParser";
 import ytdl from "ytdl-core";
+import featureMap from "@/util/featureMap";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 const dg = new Deepgram(
   process.env.DEEPGRAM_API_KEY as string,
@@ -16,18 +24,6 @@ export async function POST(request: Request) {
     features: Features;
   } = await request.json();
   const { source, features } = body;
-
-  const urlParser = (url: string) => {
-    var regExp =
-      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = url.match(regExp);
-
-    if (match && match[2].length == 11) {
-      return match[2];
-    } else {
-      //error
-    }
-  };
 
   const videoId = urlParser(source.url);
   const mp3FilePath = `/tmp/ytdl-${videoId}.mp3`;
@@ -45,31 +41,39 @@ export async function POST(request: Request) {
         mimetype: "audio/mp3",
       };
 
-      const featureMap = (features: Features): FeaturesMap => {
-        return features.map((f, i): FeatureMap => ({ [f.key]: f.value }));
-      };
-
       const map = featureMap(features);
       map.push({ llm: 1 });
+      map.push({ tag: "deeptube-demo" });
 
       const dgFeatures = Object.assign({}, ...map);
-      console.log(dgFeatures);
 
-      const transcript = await dg.transcription.preRecorded(
-        dgSource,
-        dgFeatures
-      );
+      try {
+        const transcript = await dg.transcription.preRecorded(
+          dgSource,
+          dgFeatures
+        );
 
-      const responseObj = {
-        requestId: transcript.metadata.request_id || null,
-        transcript:
-          transcript.results.channels[0]?.alternatives[0]?.transcript || null,
-        summary: transcript.results?.summary?.short || null,
-      };
+        const data = {
+          source,
+          features,
+          ...transcript,
+        };
 
-      console.log(responseObj);
+        const { error } = await supabase.from("transcriptions").insert({
+          url: source.url,
+          request_id: transcript.metadata.request_id,
+          data,
+          features,
+        });
 
-      resolve(responseObj);
+        if (error) throw new Error(error.message);
+
+        resolve({ request_id: transcript.metadata.request_id });
+      } catch (error) {
+        if (error instanceof Error) {
+          reject(error.message);
+        }
+      }
     });
   });
 
