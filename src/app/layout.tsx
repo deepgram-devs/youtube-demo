@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Transcribe a YouTube video!",
-  description: "A Next.js app, build by @lukeocodes",
+  description: "A Deepgram Next.js Demo, build by @lukeocodes",
 };
 
 export default function RootLayout({

@@ -6,6 +6,7 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { createClient } from "@supabase/supabase-js";
+import { Popover, Transition } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import { useErrorContext } from "@/context/error";
 import { useTranscriptionContext } from "@/context/transcription";
@@ -15,8 +16,6 @@ import TranscriptionLoader from "@/components/transcription/TranscriptionLoader"
 import TranscriptionResults from "@/components/transcription/TranscriptionResults";
 import urlParser from "@/util/urlParser";
 import YouTubePreview from "@/components/transcription/YouTubePreview";
-import { ClipboardIcon } from "@heroicons/react/24/outline";
-import { Popover, Transition } from "@headlessui/react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
@@ -97,11 +96,12 @@ const Prev = () => {
   );
 };
 
-const Transcript = ({
-  params: { requestId },
-}: {
+type Props = {
   params: { requestId: string };
-}) => {
+};
+
+const Transcript = ({ params }: Props) => {
+  const { requestId } = params;
   const { setError } = useErrorContext();
   const { features, url, setRequestId, setFeatures, setUrl } =
     useTranscriptionContext();
