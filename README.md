@@ -1,8 +1,22 @@
+# Deepgram YouTube Demo
+
+A Next.js based demo showing how you can transcribe a YouTube video using Deepgram.
+
+[Try it out!](https://deepgram-youtube-demo.fly.dev)
+
+![Deepgram YouTube Demo](/.github/title.png)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-![image](https://github.com/lukeocodes/deeptube/assets/956290/5b8fb9e2-a725-45e1-b267-617bf147ca0d)
-
 ## Getting Started
+
+- [Sign up to Deepgram](https://console.deepgram.com/signup) and get $200 free credit (enough for hundreds of hours of audio).
+- Create a Deepgram API key.
+- [Sign up to Supabase](https://supabase.com/dashboard/sign-up) and create a new project.
+- Create a transcriptions database using [this table definition](./db/transcriptions.sql). **Row-level security is disabled, because there is no auth on the site.**
+- Create a `.env.local` file based on [.env.local.example](./.env.local.example) using your supabase public URL, your supabase anon-key, and your DG api key.
+
+## Starting the application
 
 First, run the development server:
 
@@ -31,6 +45,8 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+~~The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.~~
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+~~Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.~~
+
+We can't currently deploy to Vercel, because we rely on tmpfs not available on Vercel deployments.
