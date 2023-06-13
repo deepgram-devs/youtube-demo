@@ -15,18 +15,59 @@ import TranscriptionLoader from "@/components/transcription/TranscriptionLoader"
 import TranscriptionResults from "@/components/transcription/TranscriptionResults";
 import urlParser from "@/util/urlParser";
 import YouTubePreview from "@/components/transcription/YouTubePreview";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
+import { Popover, Transition } from "@headlessui/react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
-const copy = () => {
-  const origin = typeof window !== "undefined" ? window.location.href : "";
+const CopyButton = () => {
+  const copy = () => {
+    const origin = typeof window !== "undefined" ? window.location.href : "";
 
-  typeof window !== "undefined"
-    ? window.navigator.clipboard.writeText(origin)
-    : null;
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(origin);
+    }
+  };
+
+  return (
+    <Popover className="relative flex">
+      <Popover.Button
+        as="a"
+        href="#copied-to-clipboard"
+        className="dg-button dg-button--tertiary"
+        onClick={copy}
+      >
+        <span>
+          Share
+          <ShareIcon className="ml-3 h-6" aria-hidden="true" />
+        </span>
+      </Popover.Button>
+
+      <div className="absolute -left-40 top-0">
+        <Transition
+          enter="transition duration-100 ease-out"
+          enterFrom="transform scale-95 opacity-0"
+          enterTo="transform scale-100 opacity-100"
+          leave="transition duration-75 ease-out"
+          leaveFrom="transform scale-100 opacity-100"
+          leaveTo="transform scale-95 opacity-0"
+        >
+          <Popover.Panel className="m-0 py-[0.4rem] rounded text-sm bg-zinc-200 text-zinc-800 w-40 text-center">
+            {({ close }) => {
+              setTimeout(() => {
+                close();
+              }, 1000);
+
+              return <>Copied to clipboard</>;
+            }}
+          </Popover.Panel>
+        </Transition>
+      </div>
+    </Popover>
+  );
 };
 
 const Next = () => {
@@ -34,16 +75,7 @@ const Next = () => {
 
   return (
     <div className="flex gap-4">
-      <a
-        onClick={() => copy()}
-        href="#copied-to-clipboard"
-        className="dg-button dg-button--tertiary"
-      >
-        <span>
-          Share
-          <ShareIcon className="ml-3 h-6" aria-hidden="true" />
-        </span>
-      </a>
+      <CopyButton />
       <PaginationButton href={`/`} validator={reset}>
         Start over
         <SparklesIcon className="ml-3 h-6" aria-hidden="true" />
