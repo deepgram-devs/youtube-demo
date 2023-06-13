@@ -59,7 +59,7 @@ const Home = () => {
             setUrl("https://www.youtube.com/watch?v=uqcfZZR7_v0");
           }}
         >
-          Click here to use the link provided
+          Use my one
           <ChevronRightIcon className="ml-1 w-[1em] inline border-0 focus:outline-none focus:ring-0 stroke-2" />
         </button>
       </div>
