@@ -6,7 +6,22 @@
   color-scheme: dark;
 }
 
+@layer base {
+  code::before,
+  code::after {
+    content: "" !important;
+  }
+
+  code {
+    @apply border py-1 px-2 border-[#687ef7];
+  }
+}
+
 @layer components {
+  .transcription-results code {
+    @apply mt-4;
+  }
+
   .body {
     @apply bg-black text-[#E1E1E5];
     /* background: #000 url("/bg.svg"); */
@@ -64,6 +79,52 @@
   .dg-button--tertiary:focus {
     background: black;
     @apply focus:text-[#e5e5e5] active:ring-2 active:ring-[#687ef7];
+  }
+
+  .ghost {
+    @apply p-px relative z-20;
+  }
+
+  .ghost > * {
+    @apply inline-block bg-black text-[#E1E1E5];
+  }
+
+  .ghost--purple {
+    @apply text-[#ae29ff] relative;
+    background: linear-gradient(85.5deg, #ee028b 5.66%, #ae29ff 99.14%);
+  }
+
+  .ghost--green {
+    @apply text-[#00e062] relative;
+    background: linear-gradient(90deg, #00e062 -91.5%, #008727 80.05%);
+  }
+
+  .ghost--yellow {
+    @apply text-[#f7cf09] relative;
+    background: linear-gradient(90deg, #f7cf09 -91.5%, #7a4f0e 80.05%);
+  }
+
+  .ghost--orange {
+    @apply text-[#f77409] relative;
+    background: linear-gradient(90deg, #f77409 -91.5%, #7a300e 80.05%);
+  }
+
+  .ghost--red {
+    @apply text-[#ef0074] relative;
+    background: linear-gradient(90deg, #ef0074 -91.5%, #89005e 80.05%);
+  }
+
+  .ghost--black {
+    @apply text-black relative bg-black;
+  }
+
+  .ghost::after {
+    content: "";
+    @apply absolute -left-1 -right-1 top-0 bottom-0 bg-current -z-10 blur-md opacity-40;
+  }
+
+  .speaker {
+    @apply font-bold;
   }
 }
 

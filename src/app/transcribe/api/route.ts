@@ -14,8 +14,8 @@ const supabase = createClient(
 );
 
 const dg = new Deepgram(
-  process.env.DEEPGRAM_API_KEY as string,
-  "llm.sandbox.deepgram.com"
+  process.env.DEEPGRAM_API_KEY as string
+  // ,"llm.sandbox.deepgram.com"
 );
 
 export async function POST(request: Request) {
@@ -41,9 +41,10 @@ export async function POST(request: Request) {
         mimetype: "audio/mp3",
       };
 
-      const map = featureMap(features);
+      const map = featureMap(features.filter((f) => f.value === true));
       map.push({ llm: 1 });
       map.push({ tag: "deeptube-demo" });
+      map.push({ utt_split: 1.2 });
 
       const dgFeatures = Object.assign({}, ...map);
 

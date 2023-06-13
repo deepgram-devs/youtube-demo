@@ -88,18 +88,18 @@ const availableFeatures: Features = [
   },
 ];
 
-const setLocalStorage = (key: string, value: unknown) => {
+const setSessionStorage = (key: string, value: unknown) => {
   try {
-    window.localStorage.setItem(key, JSON.stringify(value));
+    window.sessionStorage.setItem(key, JSON.stringify(value));
   } catch (e) {
     // catch possible errors:
     // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
   }
 };
 
-const getLocalStorage = (key: string, initialValue: unknown) => {
+const getSessionStorage = (key: string, initialValue: unknown) => {
   try {
-    const value = window.localStorage.getItem(key);
+    const value = window.sessionStorage.getItem(key);
     return value ? JSON.parse(value) : initialValue;
   } catch (e) {
     // if error, return initial value
@@ -110,9 +110,9 @@ const getLocalStorage = (key: string, initialValue: unknown) => {
 const TranscriptionContextProvider = ({
   children,
 }: TranscriptionContextInterface) => {
-  const [url, setUrl] = useState(getLocalStorage("url", ""));
+  const [url, setUrl] = useState(getSessionStorage("url", ""));
   const [features, setFeatures] = useState(
-    getLocalStorage("features", availableFeatures)
+    getSessionStorage("features", availableFeatures)
   );
   const [requestId, setRequestId] = useState("");
 
@@ -125,11 +125,11 @@ const TranscriptionContextProvider = ({
   };
 
   useEffect(() => {
-    setLocalStorage("url", url);
+    setSessionStorage("url", url);
   }, [url]);
 
   useEffect(() => {
-    setLocalStorage("features", features);
+    setSessionStorage("features", features);
   }, [features]);
 
   return (
