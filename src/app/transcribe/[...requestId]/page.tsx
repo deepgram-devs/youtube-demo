@@ -6,7 +6,7 @@ import {
   SparklesIcon,
 } from "@heroicons/react/24/outline";
 import { createClient } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useErrorContext } from "@/context/error";
 import { useTranscriptionContext } from "@/context/transcription";
 import PaginationBar from "@/components/pagination/Bar";
@@ -17,8 +17,8 @@ import urlParser from "@/util/urlParser";
 import YouTubePreview from "@/components/transcription/YouTubePreview";
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
 const copy = () => {
@@ -80,6 +80,9 @@ const Transcript = ({
     <TranscriptionLoader isLoading={isLoading} message="Preparing..." />
   );
 
+  const [tab, setTab] = useState<any>();
+  const speaker = useRef();
+
   useEffect(() => {
     setLoading(true);
     setRequestId(requestId);
@@ -125,7 +128,14 @@ const Transcript = ({
 
   useEffect(() => {
     if (!isLoading && data) {
-      setOutput(<TranscriptionResults data={data} />);
+      setOutput(
+        <TranscriptionResults
+          data={data}
+          tab={tab}
+          setTab={setTab}
+          speaker={speaker}
+        />
+      );
     }
   }, [isLoading, data]);
 

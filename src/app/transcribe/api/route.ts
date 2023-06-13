@@ -9,8 +9,8 @@ import ytdl from "ytdl-core";
 import featureMap from "@/util/featureMap";
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ""
 );
 
 const dg = new Deepgram(
@@ -49,10 +49,13 @@ export async function POST(request: Request) {
       const dgFeatures = Object.assign({}, ...map);
 
       try {
-        const transcript = await dg.transcription.preRecorded(
-          dgSource,
-          dgFeatures
-        );
+        const transcript: {
+          results?: any;
+          metadata?: any;
+          err_msg?: string;
+        } = await dg.transcription.preRecorded(dgSource, dgFeatures);
+
+        if (transcript.err_msg) throw new Error(transcript.err_msg);
 
         const data = {
           source,

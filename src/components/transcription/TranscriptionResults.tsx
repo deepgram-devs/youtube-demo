@@ -38,9 +38,7 @@ const SpeakerLine = ({
   return <></>;
 };
 
-const Utterances = ({ data }: { data: any }) => {
-  const speaker = useRef();
-
+const Utterances = ({ data, speaker }: { data: any; speaker: any }) => {
   return (
     <>
       {data.results.utterances.map(
@@ -72,9 +70,7 @@ const Utterances = ({ data }: { data: any }) => {
   );
 };
 
-const Paragraphs = ({ data }: { data: any }) => {
-  const speaker = useRef();
-
+const Paragraphs = ({ data, speaker }: { data: any; speaker: any }) => {
   return (
     <>
       {data.results.channels[0].alternatives[0].paragraphs.paragraphs.map(
@@ -107,7 +103,13 @@ const Paragraphs = ({ data }: { data: any }) => {
   );
 };
 
-const UtterancesParagraphsSwitching = ({ data }: { data: any }) => {
+const UtterancesParagraphsSwitching = ({
+  data,
+  speaker,
+}: {
+  data: any;
+  speaker: any;
+}) => {
   const [paragraphs, setParagraphs] = useState(false);
 
   return (
@@ -133,23 +135,27 @@ const UtterancesParagraphsSwitching = ({ data }: { data: any }) => {
         </span>
       </div>
       <div>
-        {paragraphs ? <Paragraphs data={data} /> : <Utterances data={data} />}
+        {paragraphs ? (
+          <Paragraphs data={data} speaker={speaker} />
+        ) : (
+          <Utterances data={data} speaker={speaker} />
+        )}
       </div>
     </>
   );
 };
 
-const Transcript = ({ data }: { data: any }) => {
+const Transcript = ({ data, speaker }: { data: any; speaker: any }) => {
   if (data.results.channels[0].alternatives[0].paragraphs) {
-    return <Paragraphs data={data} />;
+    return <Paragraphs data={data} speaker={speaker} />;
   }
 
   return <p>{data.results.channels[0].alternatives[0].transcript}</p>;
 };
 
-const Words = ({ data }: { data: any }) => {
+const Words = ({ data, speaker }: { data: any; speaker: any }) => {
   if (data.results.channels[0].alternatives[0].paragraphs) {
-    return <Paragraphs data={data} />;
+    return <Paragraphs data={data} speaker={speaker} />;
   }
 
   const paragraphs: { speaker: undefined | number; text: string }[] = [];
@@ -185,8 +191,6 @@ const Words = ({ data }: { data: any }) => {
 
   paragraphs.push({ speaker: currentSpeaker, text: currentParagraph.trim() });
 
-  const speaker = useRef();
-
   return (
     <>
       {paragraphs.map(
@@ -211,9 +215,11 @@ const Words = ({ data }: { data: any }) => {
 
 const TranscriptionTypes = ({
   data,
+  speaker,
   features,
 }: {
   data: any;
+  speaker: any;
   features: any;
 }) => {
   return (
@@ -225,20 +231,20 @@ const TranscriptionTypes = ({
         {features.diarize ? <code>diarize=true</code> : <></>}
       </div>
       {features.paragraphs && features.utterances && (
-        <UtterancesParagraphsSwitching data={data} />
+        <UtterancesParagraphsSwitching data={data} speaker={speaker} />
       )}
       {features.paragraphs && !features.utterances && (
-        <Paragraphs data={data} />
+        <Paragraphs data={data} speaker={speaker} />
       )}
       {!features.paragraphs && features.utterances && (
-        <Utterances data={data} />
+        <Utterances data={data} speaker={speaker} />
       )}
       {!features.paragraphs && !features.utterances && (
         <>
           {features.diarize ? (
-            <Words data={data} />
+            <Words data={data} speaker={speaker} />
           ) : (
-            <Transcript data={data} />
+            <Transcript data={data} speaker={speaker} />
           )}
         </>
       )}
@@ -386,7 +392,17 @@ const FeaturePanel = ({ children }: { children: any }) => {
   return <Tab.Panel>{children}</Tab.Panel>;
 };
 
-const TranscriptionResults = ({ data }: { data: any }) => {
+const TranscriptionResults = ({
+  data,
+  tab,
+  setTab,
+  speaker,
+}: {
+  data: any;
+  tab: any;
+  setTab: any;
+  speaker: any;
+}) => {
   if (isEmpty(data)) return <></>;
 
   const features: { [key: string]: boolean | string } = {};
@@ -395,8 +411,6 @@ const TranscriptionResults = ({ data }: { data: any }) => {
     .forEach((feature: Feature) => {
       features[feature.key] = feature.value;
     });
-
-  const [tab, setTab] = useState<any>();
 
   return (
     <div className="mt-8 bg-[#101014] rounded-lg transcription-results">
@@ -420,7 +434,11 @@ const TranscriptionResults = ({ data }: { data: any }) => {
           </Tab.List>
           <Tab.Panels className="border-t border-[#26262c] px-4">
             <FeaturePanel>
-              <TranscriptionTypes data={data} features={features} />
+              <TranscriptionTypes
+                data={data}
+                speaker={speaker}
+                features={features}
+              />
             </FeaturePanel>
             {features.summarize_v2 && (
               <FeaturePanel>
