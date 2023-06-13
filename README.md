@@ -10,7 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-- [Sign up to Deepgram](https://console.deepgram.com/signup) and get $200 free credit (enough for hundreds of hours of audio).
+- [Sign up to Deepgram](https://console.deepgram.com/signup?utm_source=github&utm_campaign=dx-demos&utm_content=%2Fyoutube-demo) and get $200 free credit (enough for hundreds of hours of audio).
 - Create a Deepgram API key.
 - [Sign up to Supabase](https://supabase.com/dashboard/sign-up) and create a new project.
 - Create a transcriptions database using [this table definition](./db/transcriptions.sql). **Row-level security is disabled, because there is no auth on the site.**
