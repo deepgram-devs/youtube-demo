@@ -128,14 +128,7 @@ const Transcript = ({
 
   useEffect(() => {
     if (!isLoading && data) {
-      setOutput(
-        <TranscriptionResults
-          data={data}
-          tab={tab}
-          setTab={setTab}
-          speaker={speaker}
-        />
-      );
+      setOutput(<TranscriptionResults data={data} tab={tab} setTab={setTab} />);
     }
   }, [isLoading, data]);
 

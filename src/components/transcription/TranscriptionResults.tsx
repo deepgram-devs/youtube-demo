@@ -24,21 +24,21 @@ const SpeakerLine = ({
   speaker,
 }: {
   transcriptSpeaker: number | undefined;
-  speaker: any;
+  speaker: number;
 }) => {
-  if (speaker.current === undefined || transcriptSpeaker !== speaker.current) {
-    speaker.current = transcriptSpeaker;
+  if (speaker === undefined || transcriptSpeaker !== speaker) {
+    speaker = transcriptSpeaker ?? 0;
     return (
-      <p className={`-mb-5 speaker ${colorMap[speaker.current]}`}>
-        Speaker {speaker.current}:
-      </p>
+      <p className={`-mb-5 speaker ${colorMap[speaker]}`}>Speaker {speaker}:</p>
     );
   }
 
   return <></>;
 };
 
-const Utterances = ({ data, speaker }: { data: any; speaker: any }) => {
+const Utterances = ({ data }: { data: any }) => {
+  let speaker: number;
+
   return (
     <>
       {data.results.utterances.map(
@@ -70,7 +70,9 @@ const Utterances = ({ data, speaker }: { data: any; speaker: any }) => {
   );
 };
 
-const Paragraphs = ({ data, speaker }: { data: any; speaker: any }) => {
+const Paragraphs = ({ data }: { data: any }) => {
+  let speaker: number;
+
   return (
     <>
       {data.results.channels[0].alternatives[0].paragraphs.paragraphs.map(
@@ -103,13 +105,9 @@ const Paragraphs = ({ data, speaker }: { data: any; speaker: any }) => {
   );
 };
 
-const UtterancesParagraphsSwitching = ({
-  data,
-  speaker,
-}: {
-  data: any;
-  speaker: any;
-}) => {
+const UtterancesParagraphsSwitching = ({ data }: { data: any }) => {
+  let speaker: number;
+
   const [paragraphs, setParagraphs] = useState(false);
 
   return (
@@ -135,27 +133,25 @@ const UtterancesParagraphsSwitching = ({
         </span>
       </div>
       <div>
-        {paragraphs ? (
-          <Paragraphs data={data} speaker={speaker} />
-        ) : (
-          <Utterances data={data} speaker={speaker} />
-        )}
+        {paragraphs ? <Paragraphs data={data} /> : <Utterances data={data} />}
       </div>
     </>
   );
 };
 
-const Transcript = ({ data, speaker }: { data: any; speaker: any }) => {
+const Transcript = ({ data }: { data: any }) => {
+  let speaker: number;
+
   if (data.results.channels[0].alternatives[0].paragraphs) {
-    return <Paragraphs data={data} speaker={speaker} />;
+    return <Paragraphs data={data} />;
   }
 
   return <p>{data.results.channels[0].alternatives[0].transcript}</p>;
 };
 
-const Words = ({ data, speaker }: { data: any; speaker: any }) => {
+const Words = ({ data }: { data: any }) => {
   if (data.results.channels[0].alternatives[0].paragraphs) {
-    return <Paragraphs data={data} speaker={speaker} />;
+    return <Paragraphs data={data} />;
   }
 
   const paragraphs: { speaker: undefined | number; text: string }[] = [];
@@ -190,6 +186,7 @@ const Words = ({ data, speaker }: { data: any; speaker: any }) => {
   );
 
   paragraphs.push({ speaker: currentSpeaker, text: currentParagraph.trim() });
+  let speaker: number;
 
   return (
     <>
@@ -215,11 +212,9 @@ const Words = ({ data, speaker }: { data: any; speaker: any }) => {
 
 const TranscriptionTypes = ({
   data,
-  speaker,
   features,
 }: {
   data: any;
-  speaker: any;
   features: any;
 }) => {
   return (
@@ -231,20 +226,20 @@ const TranscriptionTypes = ({
         {features.diarize ? <code>diarize=true</code> : <></>}
       </div>
       {features.paragraphs && features.utterances && (
-        <UtterancesParagraphsSwitching data={data} speaker={speaker} />
+        <UtterancesParagraphsSwitching data={data} />
       )}
       {features.paragraphs && !features.utterances && (
-        <Paragraphs data={data} speaker={speaker} />
+        <Paragraphs data={data} />
       )}
       {!features.paragraphs && features.utterances && (
-        <Utterances data={data} speaker={speaker} />
+        <Utterances data={data} />
       )}
       {!features.paragraphs && !features.utterances && (
         <>
           {features.diarize ? (
-            <Words data={data} speaker={speaker} />
+            <Words data={data} />
           ) : (
-            <Transcript data={data} speaker={speaker} />
+            <Transcript data={data} />
           )}
         </>
       )}
@@ -396,12 +391,10 @@ const TranscriptionResults = ({
   data,
   tab,
   setTab,
-  speaker,
 }: {
   data: any;
   tab: any;
   setTab: any;
-  speaker: any;
 }) => {
   if (isEmpty(data)) return <></>;
 
@@ -434,11 +427,7 @@ const TranscriptionResults = ({
           </Tab.List>
           <Tab.Panels className="border-t border-[#26262c] px-4">
             <FeaturePanel>
-              <TranscriptionTypes
-                data={data}
-                speaker={speaker}
-                features={features}
-              />
+              <TranscriptionTypes data={data} features={features} />
             </FeaturePanel>
             {features.summarize_v2 && (
               <FeaturePanel>
