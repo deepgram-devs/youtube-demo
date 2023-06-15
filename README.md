@@ -8,6 +8,10 @@ A Next.js based demo showing how you can transcribe a YouTube video using Deepgr
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Join the Deepgram Community
+
+You can come talk to us on [GitHub discussions](https://github.com/orgs/deepgram/discussions) or our [new Discord](https://dpgr.am/discord).
+
 ## Getting Started
 
 - [Sign up to Deepgram](https://console.deepgram.com/signup?utm_source=github&utm_campaign=dx-demos&utm_content=%2Fyoutube-demo) and get $200 free credit (enough for hundreds of hours of audio).
