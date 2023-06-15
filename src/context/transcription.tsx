@@ -44,7 +44,7 @@ const availableFeatures: Features = [
   {
     name: "Summarization",
     description: "Provide a short summary for the spoken content.",
-    key: "summarize_v2",
+    key: "summarize",
     value: false,
   },
   {
@@ -118,7 +118,8 @@ const TranscriptionContextProvider = ({
 
   const reset = () => {
     setUrl("");
-    setFeatures(availableFeatures);
+    let copyFeatures = [...availableFeatures]; //shallow copy features
+    setFeatures(copyFeatures);
     setRequestId("");
 
     return true;

@@ -13,7 +13,7 @@
   }
 
   code {
-    @apply border py-1 px-2 border-[#687ef7];
+    @apply border py-px px-1 border-[#374490];
   }
 }
 
@@ -25,10 +25,6 @@
   .body {
     @apply bg-black text-[#E1E1E5];
     /* background: #000 url("/bg.svg"); */
-  }
-
-  .checkbox-label:has(input:checked) {
-    @apply ring-2 ring-[#677df5];
   }
 
   .dg-button {

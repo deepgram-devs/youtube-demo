@@ -7,6 +7,7 @@ import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
 } from "@heroicons/react/24/outline";
+import { Fragment } from "react";
 
 const Next = () => {
   const { features } = useTranscriptionContext();
@@ -49,29 +50,30 @@ const Features = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col prose prose-invert max-w-full">
       <div className="grid grid-cols-2 gap-2">
         {features.map((feature, index) => (
-          <label
-            key={feature.key}
-            htmlFor={feature.key}
-            className="flex checkbox-label rounded-md min-w-full p-5 ring-1 ring-inset ring-gray-300 gap-4"
-          >
-            <div className="grow flex flex-col gap-2 select-none">
-              <input
-                defaultChecked={feature.value}
-                type="checkbox"
-                name={feature.key}
-                id={feature.key}
-                onChange={() => {
-                  updateFeature(index, !feature.value);
-                }}
-                className="hidden focus:outline-none focus:ring-0"
-              />
-              <span className="block font-medium">{feature.name}</span>
-              <span className="text-gray-400">{feature.description}</span>
-            </div>
-          </label>
+          <div key={feature.key}>
+            <input
+              defaultChecked={feature.value}
+              type="checkbox"
+              name={feature.key}
+              id={`feature-${feature.key}`}
+              onChange={() => {
+                updateFeature(index, !feature.value);
+              }}
+              className="hidden peer"
+            />
+            <label
+              htmlFor={`feature-${feature.key}`}
+              className="flex rounded-md min-w-full p-5 ring-1 ring-inset ring-gray-300 peer-checked:ring-[#677df5] gap-4"
+            >
+              <div className="grow flex flex-col gap-2 select-none">
+                <span className="block font-medium">{feature.name}</span>
+                <span className="text-gray-400">{feature.description}</span>
+              </div>
+            </label>
+          </div>
         ))}
       </div>
       <PaginationBar prev={Prev} next={Next} />
