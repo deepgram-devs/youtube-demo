@@ -251,7 +251,7 @@ const Summarize = ({ data }: { data: any }) => {
   return (
     <>
       <div className="flex gap-2">
-        <code>summarize_v2=true</code>
+        <code>summarize=v2</code>
       </div>
       {data.results.summary ? (
         <p>{data.results.summary.short}</p>
@@ -327,7 +327,8 @@ const RequestDetails = ({ data }: { data: any }) => {
   data.features
     .filter((feature: Feature) => feature.value !== false)
     .forEach((feature: Feature) => {
-      features[feature.key] = feature.value;
+      features[feature.key] =
+        feature.value === true ? feature.truthy ?? feature.value : false;
     });
 
   const curl = `curl --request POST \\
@@ -412,7 +413,7 @@ const TranscriptionResults = ({
           <Tab.List className="p-4">
             <div className="flex flex-wrap gap-2">
               <FeatureTab>Transcription</FeatureTab>
-              {features.summarize_v2 && <FeatureTab>Summary</FeatureTab>}
+              {features.summarize && <FeatureTab>Summary</FeatureTab>}
               {features.detect_topics && (
                 <FeatureTab>Topic Detection</FeatureTab>
               )}
@@ -429,7 +430,7 @@ const TranscriptionResults = ({
             <FeaturePanel>
               <TranscriptionTypes data={data} features={features} />
             </FeaturePanel>
-            {features.summarize_v2 && (
+            {features.summarize && (
               <FeaturePanel>
                 <Summarize data={data} />
               </FeaturePanel>

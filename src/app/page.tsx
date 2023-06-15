@@ -52,7 +52,7 @@ const Home = () => {
         </div>
       </div>
       <div className="text-xs">
-        Don't have YouTube video to hand?{" "}
+        Don&apos;t have YouTube video to hand?{" "}
         <Link
           className="focus:outline-none focus:ring-0 text-[#81f4b4] hover:underline"
           href="/transcribe/8b3aa19b-c5f0-4f7f-9636-5cfc35ff90ba"
