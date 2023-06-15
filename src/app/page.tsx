@@ -55,7 +55,7 @@ const Home = () => {
         Don&apos;t have YouTube video to hand?{" "}
         <Link
           className="focus:outline-none focus:ring-0 text-[#81f4b4] hover:underline"
-          href="/transcribe/8b3aa19b-c5f0-4f7f-9636-5cfc35ff90ba"
+          href="/transcribe/9dca4fc0-99e2-489f-9ce2-e1b07b775659"
         >
           View sample result
           <ChevronRightIcon className="ml-1 w-[1em] inline border-0 focus:outline-none focus:ring-0 stroke-2" />

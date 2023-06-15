@@ -48,8 +48,6 @@ export async function POST(request: Request) {
 
       const dgFeatures = Object.assign({}, ...map);
 
-      console.log(dgFeatures);
-
       try {
         const transcript: {
           results?: any;
