@@ -8,6 +8,7 @@ type Feature = {
   key: string;
   value: boolean;
   beta?: boolean;
+  truthy?: string;
 };
 
 type Features = Feature[];
@@ -46,6 +47,7 @@ const availableFeatures: Features = [
     description: "Provide a short summary for the spoken content.",
     key: "summarize",
     value: false,
+    truthy: "v2",
   },
   {
     name: "Topic Detection",
