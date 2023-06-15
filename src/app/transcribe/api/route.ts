@@ -14,8 +14,8 @@ const supabase = createClient(
 );
 
 const dg = new Deepgram(
-  process.env.DEEPGRAM_API_KEY as string
-  // ,"llm.sandbox.deepgram.com"
+  process.env.DEEPGRAM_API_KEY as string,
+  "api.beta.deepgram.com"
 );
 
 export async function POST(request: Request) {
