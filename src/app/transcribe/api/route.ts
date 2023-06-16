@@ -42,6 +42,7 @@ export async function POST(request: Request) {
       };
 
       const map = featureMap(features.filter((f) => f.value !== false));
+      map.push({ model: "nova" });
       map.push({ llm: 1 });
       map.push({ tag: "deeptube-demo" });
       map.push({ utt_split: 1.2 });

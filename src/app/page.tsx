@@ -52,10 +52,10 @@ const Home = () => {
         </div>
       </div>
       <div className="text-xs">
-        Don&apos;t have YouTube video to hand?{" "}
+        Don&apos;t have a YouTube video to hand?{" "}
         <Link
           className="focus:outline-none focus:ring-0 text-[#81f4b4] hover:underline"
-          href="/transcribe/9dca4fc0-99e2-489f-9ce2-e1b07b775659"
+          href="/transcribe/6c9a0f72-a509-4ace-adf8-15ad2fd9f208"
         >
           View sample result
           <ChevronRightIcon className="ml-1 w-[1em] inline border-0 focus:outline-none focus:ring-0 stroke-2" />
