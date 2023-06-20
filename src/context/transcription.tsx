@@ -86,7 +86,7 @@ const availableFeatures: Features = [
     description:
       "Recognise speaker changes, and format showing who was speaking.",
     key: "diarize",
-    value: false,
+    value: true,
   },
 ];
 

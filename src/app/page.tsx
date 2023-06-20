@@ -62,6 +62,10 @@ const Home = () => {
         </Link>
       </div>
       <PaginationBar next={Next} />
+      <p className="w-1/2 mt-0 self-end text-right text-gray-400">
+        By using this app, you permit the storage of the transcription result
+        temporarily.
+      </p>
     </div>
   );
 };

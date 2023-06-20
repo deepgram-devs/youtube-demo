@@ -59,7 +59,7 @@ export default function RootLayout({
                 <Brand />
                 <Errors />
                 <div>{children}</div>
-              </div>{" "}
+              </div>
             </main>
           </TranscriptionContextProvider>
         </ErrorContextProvider>

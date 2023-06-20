@@ -1,4 +1,3 @@
-import TranscriptionDetection from "./TranscriptionDetection";
 import CodeBlock from "@/components/CodeBlock";
 import CopyButton from "@/components/CopyButton";
 import { Feature } from "@/context/transcription";
