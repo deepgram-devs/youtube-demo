@@ -41,7 +41,7 @@ export default function RootLayout({
             <span>Free API Key</span>
           </a>
           <a
-            href="https://github.com/lukeocodes/deeptube"
+            href="https://github.com/deepgram-devs/youtube-demo"
             target="_blank"
             className="text-white flex p-4"
           >
