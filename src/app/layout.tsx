@@ -10,6 +10,8 @@ import {
   CodeBracketSquareIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import Head from "next/head";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" data-color-scheme="dark">
+      <Head>
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-M5WQMGR');`}
+        </Script>
+      </Head>
       <body className={`${inter.className} body`}>
         <div className="mx-auto flex flex-row-reverse max-w-screen-xl">
           <a
