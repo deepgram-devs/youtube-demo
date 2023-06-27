@@ -47,7 +47,7 @@ const Home = () => {
               setUrl(event.target.value);
             }}
             className="block w-2/3 border-0 border-b border-gray-600 p-0 px-2 focus:border-[#677df5] bg-[#101014] text-[#E1E1E5] placeholder:text-gray-400 focus:outline-none focus:ring-0 text-sm leading-6"
-            placeholder="https://www.youtube.com/watch?v=xfr..."
+            placeholder="Paste a YouTube link here."
           />
         </div>
       </div>

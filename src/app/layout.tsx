@@ -5,12 +5,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { TranscriptionContextProvider } from "@/context/transcription";
 import { ErrorContextProvider } from "@/context/error";
-import {
-  CodeBracketIcon,
-  CodeBracketSquareIcon,
-  SparklesIcon,
-} from "@heroicons/react/24/outline";
-import Head from "next/head";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
